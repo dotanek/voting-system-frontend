@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import MenuSquare from './menu/MenuSquare';
+import MenuSquare from './MenuSquare';
 import Title from '../Title';
 
 import icon_poll_magnify from '../../../resources/icon_poll_magnify.svg';

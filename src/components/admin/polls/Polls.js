@@ -6,7 +6,7 @@ import Title from '../Title';
 import PollsListItem from './PollsListItem';
 
 let Container = styled.div`
-    width: 600px;
+    width: 700px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -20,14 +20,14 @@ let PollsList = styled.div`
     flex-direction: column;
 `
 
-class PollsView extends Component {
+class Polls extends Component {
     state = {
         polls: [
-            {id: 1, name:"test-poll-name1", date:"11.01.2021", active:true},
-            {id: 2, name:"test-poll-name2", date:"12.02.2021", active:true},
-            {id: 3, name:"test-poll-name3", date:"21.03.2021", active:false},
-            {id: 4, name:"test-poll-name4", date:"22.04.2021", active:false},
-            {id: 5, name:"test-poll-name5", date:"31.05.2020", active:true}
+            {id: 1, name:"test-poll-name1", date_start:"11.01.2021", date_end:"11.01.2021", active:true},
+            {id: 2, name:"test-poll-name2-but-longer", date_start:"12.02.2021", date_end:"11.01.2021", active:true},
+            {id: 3, name:"test3", date_start:"21.03.2021", date_end:"11.01.2021", active:false},
+            {id: 4, name:"test-poll-name4", date_start:"22.04.2021", date_end:"11.01.2021", active:false},
+            {id: 5, name:"test-poll-name55555", date_start:"31.05.2020", date_end:"11.01.2021", active:true}
         ]
     }
 
@@ -42,10 +42,9 @@ class PollsView extends Component {
     render() { 
         return (
             <React.Fragment>
-                <Title text="Twoje głosowania:"/>
+                <Title text="Wyniki głosowań:"/>
                 <Container>
                     <PollsList>
-                        <PollsListItem isHeader="true" />
                         {this.renderListItems()}
                     </PollsList>
                 </Container>
@@ -55,4 +54,4 @@ class PollsView extends Component {
     }
 }
  
-export default PollsView;
+export default Polls;

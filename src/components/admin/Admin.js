@@ -7,7 +7,8 @@ import {
 } from 'react-router-dom';
 
 import Main from './main/Main';
-import PollsView from './polls-view/PollsView';
+import Polls from './polls/Polls';
+import Poll from './poll/Poll';
 
 let Container = styled.div`
     width: 100vw;
@@ -27,7 +28,8 @@ class Admin extends Component {
                 <Router>
                     <Switch>
                         <Route exact path="/admin" component={Main}/>
-                        <Route path="/admin/polls-view" component={PollsView}/>
+                        <Route exact path="/admin/polls-view" component={Polls}/>
+                        <Route exact path="/admin/polls-view/:id" component={Poll}/>
                         {/*<Route path="/admin/polls-add" component={Main}/>*/}
                     </Switch>
                 </Router>

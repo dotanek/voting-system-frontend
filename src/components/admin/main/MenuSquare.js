@@ -14,12 +14,14 @@ let Container = styled(Link)`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    opacity: 0.8;
 
     transition: 0.2s ease-in-out;
 
     &:hover {
         transform: scale(1.05);
         cursor: pointer;
+        opacity: 1;
     }
 `
 
