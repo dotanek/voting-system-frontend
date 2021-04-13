@@ -7,10 +7,13 @@ import PollsListItem from './PollsListItem';
 
 let Container = styled.div`
     width: 700px;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 0 10px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    margin-top: 20px;
+    margin-top: 30px;
     align-items: center;
 `
 
@@ -27,7 +30,10 @@ class Polls extends Component {
             {id: 2, name:"test-poll-name2-but-longer", date_start:"12.02.2021", date_end:"11.01.2021", active:true},
             {id: 3, name:"test3", date_start:"21.03.2021", date_end:"11.01.2021", active:false},
             {id: 4, name:"test-poll-name4", date_start:"22.04.2021", date_end:"11.01.2021", active:false},
-            {id: 5, name:"test-poll-name55555", date_start:"31.05.2020", date_end:"11.01.2021", active:true}
+            {id: 5, name:"test-poll-name55555", date_start:"31.05.2020", date_end:"11.01.2021", active:true},
+            {id: 5, name:"test-poll-name55555", date_start:"31.05.2020", date_end:"11.01.2021", active:true},
+            
+
         ]
     }
 
@@ -42,7 +48,7 @@ class Polls extends Component {
     render() { 
         return (
             <React.Fragment>
-                <Title text="Wyniki głosowań:"/>
+                <Title text="Lista głosowań:"/>
                 <Container>
                     <PollsList>
                         {this.renderListItems()}

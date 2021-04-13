@@ -16,6 +16,10 @@ let Container = styled(Link)`
     //background-color: #57A13D;
     //box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
 
+    &:first-of-type {
+        margin-top: 0;
+    }
+
     &:hover {
         //background-color: rgba(255,255,255,1);
         background-color: ${props => props.isactive ? "rgba(87,161,61,1)" : "rgba(114,176,208,1)"};

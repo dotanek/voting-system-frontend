@@ -7,7 +7,7 @@ let Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 2px solid white;
+    border: 1px solid white;
     font-size: 20px;
 
     @media (max-width:650px) {
