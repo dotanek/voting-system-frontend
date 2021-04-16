@@ -4,9 +4,8 @@ import styled from 'styled-components';
 import MenuSquare from './MenuSquare';
 import Title from '../Title';
 
-import icon_poll_magnify from '../../../resources/icon_poll_magnify.svg';
-import icon_poll_add from '../../../resources/icon_poll_add.svg';
-import BackButton from '../BackButton';
+import icon_poll_magnify from '../../../resources/icon_poll_magnify_white.svg';
+import icon_poll_add from '../../../resources/icon_poll_add_white.svg';
 
 let Container = styled.div`
     width: 50%;

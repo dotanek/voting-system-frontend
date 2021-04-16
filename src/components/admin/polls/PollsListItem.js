@@ -11,19 +11,13 @@ let Container = styled(Link)`
     transition: 0.2s ease-in-out;
     border-left: 4px solid white;
     background-color: ${props => props.isactive ? "rgba(87,161,61,0.3)" : "rgba(114,176,208,0.3)"};
-    //background-color: rgba(255,255,255,0.2);
-    //background-color: rgba(87,161,61,0.3);
-    //background-color: #57A13D;
-    //box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
 
     &:first-of-type {
         margin-top: 0;
     }
 
     &:hover {
-        //background-color: rgba(255,255,255,1);
         background-color: ${props => props.isactive ? "rgba(87,161,61,1)" : "rgba(114,176,208,1)"};
-        //color: #202020;
     }
 `
 let Name = styled.div`
@@ -73,18 +67,6 @@ let Bottom = styled.div`
     flex: 1;
     font-size: 15px;
     padding-left: 10px;
-`
-
-let LastTop = styled(Top)`
-    justify-content: flex-end;
-    padding-left: 0;
-    padding-right: 10px;
-`
-
-let LastBottom = styled(Bottom)`
-    justify-content: flex-end;
-    padding-left: 0;
-    padding-right: 10px;
 `
 
 class PollsListItem extends Component {

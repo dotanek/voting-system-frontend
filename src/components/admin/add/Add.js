@@ -150,7 +150,7 @@ let HorizontalSquare = styled.div`
     background-color: white;
     border-radius: 2px;
 
-    transition: 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 `
 
 let VerticalSquare = styled(HorizontalSquare)`
@@ -178,9 +178,24 @@ let ConfirmButton = styled.div`
 
 class Add extends Component {
     state = {
+        nameInputFieldValue:"",
+        dateStartInputFieldValue:"",
+        dateEndInputFieldValue:"",
         classInputFieldValue:"",
         classes: [
         ]
+    }
+
+    onChangeNameInputField = (e) => {
+        this.setState({nameInputFieldValue:e.target.value});
+    }
+
+    onChangeDateStartInputField = (e) => {
+        this.setState({dateStartInputFieldValue:e.target.value});
+    }
+
+    onChangeDateEndInputField = (e) => {
+        this.setState({dateEndInputFieldValue:e.target.value});
     }
 
     onChangeClassInputField = (e) => {
@@ -188,7 +203,19 @@ class Add extends Component {
     }
 
     onClickClassAddButton = () => {
+        let value = this.state.classInputFieldValue;
+
+        if (value.length === 0) {
+            return alert("Nazwa nie może być pusta.");
+        }
+
         let classes = this.state.classes;
+
+        let duplicate = classes.find(c => c === value);
+        if (duplicate != null) {
+            return alert("Pozycja z tą samą nazwą już istnieje!");
+        }
+            
         classes.push(this.state.classInputFieldValue);
         this.setState({classes,classInputFieldValue:""});
     }
@@ -196,9 +223,25 @@ class Add extends Component {
     onClickClassButton = (cls) => {
         console.log(cls);
         let classes = this.state.classes;
-        let targetClass = classes.find(c => c == cls);
+        let targetClass = classes.find(c => c === cls);
         classes.splice(classes.indexOf(targetClass),1);
         this.setState({classes});
+    }
+
+    onClickConfirmButton = () => {
+        if (this.state.nameInputFieldValue.length < 3) {
+            return alert("Nazwa głosowania musi mieć przynajmniej 3 znaki.");
+        }
+        if (this.state.dateStartInputFieldValue.length == 0) {
+            return alert("Data rozpoczęcia musi zostać określona.");
+        }
+        if (this.state.dateEndInputFieldValue.length == 0) {
+            return alert("Data zakończenia musi zostać określona.");
+        }
+        if (this.state.classes.length < 2) {
+            return alert("Głosowanie musi mieć przynajmniej 2 wybory.");
+        }
+        // Create request here.
     }
 
     renderClasses = () => {
@@ -225,15 +268,15 @@ class Add extends Component {
                 <InputBox>
                     <Input>
                         <InputLabel>Nazwa głosowania</InputLabel>
-                        <InputField placeholder="Nazwa"/>
+                        <InputField value={this.nameInputFieldValue} onChange={this.onChangeNameInputField} placeholder="Nazwa"/>
                     </Input>
                     <Input>
                         <InputLabel>Data rozpoczęcia</InputLabel>
-                        <DateInputField className="no-select" type="date" placeholder="Data rozpoczęcia"/>
+                        <DateInputField value={this.dateStartInputFieldValue} onChange={this.onChangeDateStartInputField} className="no-select" type="date" placeholder="Data rozpoczęcia"/>
                     </Input>
                     <Input>
                         <InputLabel>Data zakończenia</InputLabel>
-                        <DateInputField className="no-select" type="date" placeholder="Data zakończenia"/>
+                        <DateInputField value={this.dateEndInputFieldValue} onChange={this.onChangeDateEndInputField} className="no-select" type="date" placeholder="Data zakończenia"/>
                     </Input>
                 </InputBox>
                 <ClassBox>
@@ -254,7 +297,7 @@ class Add extends Component {
                     </ClassList>
                 </ClassBox>
             </Container>
-            <ConfirmButton>Utwórz</ConfirmButton>
+            <ConfirmButton onClick={this.onClickConfirmButton}>Utwórz</ConfirmButton>
             <BackButton linkTo="/admin" />
         </React.Fragment>
         );

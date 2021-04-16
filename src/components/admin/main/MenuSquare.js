@@ -3,13 +3,12 @@ import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 
 let Container = styled(Link)`
-    border: 1px solid white;
     flex: 1;
     margin: 15px;
     min-width: 170px;
     width: 170px;
     height: 200px;
-    background-color: white;
+    background-color: #2e80dd;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,7 +30,7 @@ let Title = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #202020;
+    color: white;
     font-weight: 600;
     margin-bottom: 10px;
 `

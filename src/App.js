@@ -13,7 +13,6 @@ import User from './components/user/User';
 class App extends Component {
   state = {  }
   render() { 
-    console.log('Refresh!');
     return (
       <Router>
         <Switch>
