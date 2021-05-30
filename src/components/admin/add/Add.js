@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import Title from '../Title';
 import BackButton from '../BackButton';
@@ -232,16 +233,42 @@ class Add extends Component {
         if (this.state.nameInputFieldValue.length < 3) {
             return alert("Nazwa głosowania musi mieć przynajmniej 3 znaki.");
         }
-        if (this.state.dateStartInputFieldValue.length == 0) {
+        if (this.state.dateStartInputFieldValue.length === 0) {
             return alert("Data rozpoczęcia musi zostać określona.");
         }
-        if (this.state.dateEndInputFieldValue.length == 0) {
+        if (this.state.dateEndInputFieldValue.length === 0) {
             return alert("Data zakończenia musi zostać określona.");
         }
         if (this.state.classes.length < 2) {
             return alert("Głosowanie musi mieć przynajmniej 2 wybory.");
         }
         // Create request here.
+
+
+        let credentials = JSON.parse(localStorage.getItem("credentials"));
+
+        let data = {
+            auth: {
+                accountAddress: credentials.address,
+                password: credentials.password
+            },
+            title: this.state.nameInputFieldValue,
+            dateFrom: this.state.dateStartInputFieldValue,
+            dateTo: this.state.dateEndInputFieldValue,
+            candidates: this.state.classes,
+            keysPerVoter: 1
+        }
+
+        axios.post('https://localhost:5001/create_election', data)
+            .then(res => {
+                console.log(res.data);
+                this.setState({polls:res.data.elections});
+            })
+            .catch(e => {
+                if (e.response) {
+                    console.log(e.response);
+                }
+            })
     }
 
     renderClasses = () => {

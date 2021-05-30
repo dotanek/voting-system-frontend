@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import Title from '../Title';
 import BackButton from '../BackButton';
@@ -80,6 +81,28 @@ class Poll extends Component {
                 {label:"Bbbb", value:32},
             ]
         }
+    }
+
+    componentDidMount = () => {
+        let credentials = JSON.parse(localStorage.getItem("credentials"));
+
+        let data = {
+            accountAddress: credentials.address,
+            password: credentials.password
+        }
+
+        let urlParts = window.location.href.split('/');
+        let electionId = urlParts[urlParts.length-1];
+
+        axios.post('https://localhost:5001/get_election_details?id='+electionId, data)
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(e => {
+                if (e.response) {
+                    console.log(e.response);
+                }
+            })
     }
 
     render() { 

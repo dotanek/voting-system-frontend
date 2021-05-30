@@ -21,6 +21,17 @@ let Container = styled.div`
     font-family: 'Roboto', sans-serif;
 `
 
+const RouteWithProps = ({component: Component, auth, ...rest}) => {
+    return (
+      <Route
+        {...rest}
+        render={(props) => {
+          return <Component {...props} auth={auth} />
+        }}
+      />
+    );
+  }
+
 class Admin extends Component {
     state = {  }
     render() { 
@@ -28,10 +39,10 @@ class Admin extends Component {
             <Container>
                 <Router>
                     <Switch>
-                        <Route exact path="/admin" component={Main}/>
-                        <Route exact path="/admin/polls-view" component={Polls}/>
-                        <Route exact path="/admin/polls-view/:id" component={Poll}/>
-                        <Route path="/admin/polls-add" component={Add}/>
+                        <RouteWithProps exact path="/admin" component={Main} auth={this.props.auth}/>
+                        <RouteWithProps exact path="/admin/polls-view" component={Polls} auth={this.props.auth}/>
+                        <RouteWithProps exact path="/admin/polls-view/:id" component={Poll} auth={this.props.auth}/>
+                        <RouteWithProps path="/admin/polls-add" component={Add} auth={this.props.auth}/>
                     </Switch>
                 </Router>
             </Container>

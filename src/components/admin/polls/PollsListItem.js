@@ -73,18 +73,18 @@ class PollsListItem extends Component {
     state = {  }
     render() { 
         return (
-            <Container to={"/admin/polls-view/"+this.props.poll.id} isactive={this.props.poll.active}>
+            <Container to={"/admin/polls-view/"+this.props.poll.electionId} isactive={this.props.poll.active ? 1 : 0}>
                 <Name>
                     <Top>Nazwa</Top>
-                    <Bottom>{this.props.poll.name}</Bottom>
+                    <Bottom>{this.props.poll.title}</Bottom>
                 </Name>
                 <DateStart>
                     <Top>Początek</Top>
-                    <Bottom>{this.props.poll.date_start}</Bottom>
+                    <Bottom>{this.props.poll.dateFrom.slice(0,10)}</Bottom>
                 </DateStart>
                 <DateEnd>
                     <Top>Koniec</Top>
-                    <Bottom>{this.props.poll.date_end}</Bottom>
+                    <Bottom>{this.props.poll.dateTo.slice(0,10)}</Bottom>
                 </DateEnd>
                 <Votes>
                     <Top>Łączne głosy</Top>

@@ -21,7 +21,7 @@ class Chart extends Component {
         
         return data.map(
             d => (
-                <ChartBar datum={d} total={data[0].value}/>
+                <ChartBar key={d.label} datum={d} total={data[0].value}/>
             )
         );
     }

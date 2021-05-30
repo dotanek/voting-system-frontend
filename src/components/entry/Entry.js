@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import { 
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    Redirect
 } from 'react-router-dom';
 
 let Container = styled.div`
@@ -90,14 +92,34 @@ let EntrySwapLabel = styled.div`
 
 
 class Entry extends Component {
-    state = {  }
+    state = {
+        valueInputFieldAdminCode:"",
+        valueInputFieldAdminPassword:""
+    }
 
-    onClickInputButtonUser = () => {
+    onChangeInputFieldAdminCode = (e) => {
+        this.setState({valueInputFieldAdminCode:e.target.value});
+    }
+
+    onChangeInputFieldAdminPassword = (e) => {
+        this.setState({valueInputFieldAdminPassword:e.target.value});
+    }
+
+    onClickInputButtonUserCheck = () => {
+
+    }
+
+    onClickInputButtonUserVote = () => {
 
     }
 
     onClickInputButtonAdmin = () => {
-        // Auth code
+        let credentials = {
+            address: this.state.valueInputFieldAdminCode,
+            password: this.state.valueInputFieldAdminPassword
+        }
+
+        localStorage.setItem("credentials",JSON.stringify(credentials));
         window.location.href = "/admin";
     }
 
@@ -108,7 +130,8 @@ class Entry extends Component {
                 <InputContainer>
                     <InputField placeholder="Pesel"/>
                     <InputField placeholder="Kod"/>
-                    <InputButton onClick={this.onClickInputButtonUser}>Wyślij</InputButton>
+                    <InputButton onClick={this.onClickInputButtonUserVote}>Zagłosuj</InputButton>
+                    <InputButton style={{marginTop:"10px"}} onClick={this.onClickInputButtonUserCheck}>Sprawdź głos</InputButton>
                     <EntrySwapLabel>
                         <Link to="/entry/admin">
                             Autoryzuj jako administrator.
@@ -124,8 +147,9 @@ class Entry extends Component {
             <InputWindow>
                 <WindowLabel>Wprowadź hasło administratora:</WindowLabel>
                 <InputContainer>
-                    <InputField placeholder="Kod" type="password"/>
-                    <InputButton onClick={this.onClickInputButtonAdmin}>Wyślij</InputButton>
+                    <InputField onChange={this.onChangeInputFieldAdminCode} value={this.state.valueInputFieldAdminCode} placeholder="Kod" type="text"/>
+                    <InputField onChange={this.onChangeInputFieldAdminPassword} value={this.state.valueInputFieldAdminPassword} placeholder="Hasło" type="password"/>
+                    <InputButton onClick={this.onClickInputButtonAdmin}>Zaloguj</InputButton>
                     <EntrySwapLabel>
                         <Link to="/entry/user">
                             Powrót do głosowania.
@@ -137,7 +161,11 @@ class Entry extends Component {
     }
 
 
-    render() { 
+    render() {
+        if (this.props.auth.isAuthenticated()) {
+            return <Redirect to='/admin' />
+        }
+
         return ( 
             <Container>
                 <Router>
