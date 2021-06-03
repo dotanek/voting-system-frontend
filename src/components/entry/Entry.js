@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-import { 
+import {
     BrowserRouter as Router,
     Switch,
     Route,
@@ -10,7 +10,7 @@ import {
     Redirect
 } from 'react-router-dom';
 
-let Container = styled.div`
+let Container = styled.div `
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -19,14 +19,14 @@ let Container = styled.div`
     font-family: 'Roboto', sans-serif;
 `
 
-let InputWindow = styled.div`
+let InputWindow = styled.div `
     width: 400px;
     height: 300px;
     display: flex;
     flex-direction: column;
 `
 
-let WindowLabel = styled.div`
+let WindowLabel = styled.div `
     width: 100%;
     flex-grow: 1;
     display: flex;
@@ -37,13 +37,13 @@ let WindowLabel = styled.div`
     border-bottom: 2px solid white;
 `
 
-let InputContainer = styled.div`
+let InputContainer = styled.div `
     width: 100%;
     height: 60%;
     padding-top: 10px;
 `
 
-let InputField = styled.input`
+let InputField = styled.input `
     width: calc(100% - 16px);
     padding: 6px;
     margin: 0;
@@ -61,7 +61,7 @@ let InputField = styled.input`
     }
 `
 
-let InputButton = styled.div`
+let InputButton = styled.div `
     width: calc(100% - 16px);
     padding: 8px;
     display: flex;
@@ -80,7 +80,7 @@ let InputButton = styled.div`
     }
 `
 
-let EntrySwapLabel = styled.div`
+let EntrySwapLabel = styled.div `
     width: 100%;
     display: flex;
     justify-content: center;
@@ -93,16 +93,16 @@ let EntrySwapLabel = styled.div`
 
 class Entry extends Component {
     state = {
-        valueInputFieldAdminCode:"",
-        valueInputFieldAdminPassword:""
+        valueInputFieldAdminCode: "",
+        valueInputFieldAdminPassword: ""
     }
 
     onChangeInputFieldAdminCode = (e) => {
-        this.setState({valueInputFieldAdminCode:e.target.value});
+        this.setState({ valueInputFieldAdminCode: e.target.value });
     }
 
     onChangeInputFieldAdminPassword = (e) => {
-        this.setState({valueInputFieldAdminPassword:e.target.value});
+        this.setState({ valueInputFieldAdminPassword: e.target.value });
     }
 
     onClickInputButtonUserCheck = () => {
@@ -119,91 +119,113 @@ class Entry extends Component {
             password: this.state.valueInputFieldAdminPassword
         }
 
+        axios.defaults.withCredentials = true;
+
         axios.post('https://localhost:5001/authenticate', data)
-        .then(res => {
-            console.log(res.data);
-            localStorage.setItem("authToken", JSON.stringify(res.data.authToken));
-
-            const headers = { authToken:res.data.authToken}
-
-            axios.get('https://localhost:5001/get_elections', { headers })
             .then(res => {
-                console.log(res.data);
+                console.log(res);
+                localStorage.setItem("authToken", JSON.stringify(res.data.authToken));
+
+                const headers = { authToken: res.data.authToken }
+
+                axios.get('https://localhost:5001/get_elections', { headers })
+                    .then(res => {
+                        console.log(res.data);
+                    })
+                    .catch(e => {
+                        if (e.response) {
+                            console.log(e.response);
+                        }
+                    })
+
+                //window.location.href = "/admin";
             })
             .catch(e => {
                 if (e.response) {
                     console.log(e.response);
                 }
+                alert("Nie udało się zalogować.");
             })
-
-            //window.location.href = "/admin";
-        })
-        .catch(e => {
-            if (e.response) {
-                console.log(e.response);
-            }
-            alert("Nie udało się zalogować.");
-        })
     }
 
     renderUserWindow = () => {
-        return(
-            <InputWindow>
-                <WindowLabel>Wprowadź kod oraz pesel aby zagłosować:</WindowLabel>
-                <InputContainer>
-                    <InputField placeholder="Pesel"/>
-                    <InputField placeholder="Kod"/>
-                    <InputButton onClick={this.onClickInputButtonUserVote}>Zagłosuj</InputButton>
-                    <InputButton style={{marginTop:"10px"}} onClick={this.onClickInputButtonUserCheck}>Sprawdź głos</InputButton>
-                    <EntrySwapLabel>
-                        <Link to="/entry/admin">
-                            Autoryzuj jako administrator.
-                        </Link>
-                    </EntrySwapLabel>
-                </InputContainer>
-            </InputWindow>
+        return ( <
+            InputWindow >
+            <
+            WindowLabel > Wprowadź kod oraz pesel aby zagłosować: < /WindowLabel> <
+            InputContainer >
+            <
+            InputField placeholder = "Pesel" / >
+            <
+            InputField placeholder = "Kod" / >
+            <
+            InputButton onClick = { this.onClickInputButtonUserVote } > Zagłosuj < /InputButton> <
+            InputButton style = {
+                { marginTop: "10px" }
+            }
+            onClick = { this.onClickInputButtonUserCheck } > Sprawdź głos < /InputButton> <
+            EntrySwapLabel >
+            <
+            Link to = "/entry/admin" >
+            Autoryzuj jako administrator. <
+            /Link> < /
+            EntrySwapLabel > <
+            /InputContainer> < /
+            InputWindow >
         );
     }
 
     renderAdminWindow = () => {
-        return(
-            <InputWindow>
-                <WindowLabel>Wprowadź hasło administratora:</WindowLabel>
-                <InputContainer>
-                    <InputField onChange={this.onChangeInputFieldAdminCode} value={this.state.valueInputFieldAdminCode} placeholder="Kod" type="text"/>
-                    <InputField onChange={this.onChangeInputFieldAdminPassword} value={this.state.valueInputFieldAdminPassword} placeholder="Hasło" type="password"/>
-                    <InputButton onClick={this.onClickInputButtonAdmin}>Zaloguj</InputButton>
-                    <EntrySwapLabel>
-                        <Link to="/entry/user">
-                            Powrót do głosowania.
-                        </Link>
-                    </EntrySwapLabel>
-                </InputContainer>
-            </InputWindow>
+        return ( <
+            InputWindow >
+            <
+            WindowLabel > Wprowadź hasło administratora: < /WindowLabel> <
+            InputContainer >
+            <
+            InputField onChange = { this.onChangeInputFieldAdminCode }
+            value = { this.state.valueInputFieldAdminCode }
+            placeholder = "Kod"
+            type = "text" / >
+            <
+            InputField onChange = { this.onChangeInputFieldAdminPassword }
+            value = { this.state.valueInputFieldAdminPassword }
+            placeholder = "Hasło"
+            type = "password" / >
+            <
+            InputButton onClick = { this.onClickInputButtonAdmin } > Zaloguj < /InputButton> <
+            EntrySwapLabel >
+            <
+            Link to = "/entry/user" >
+            Powrót do głosowania. <
+                /Link> < /
+            EntrySwapLabel > <
+            /InputContainer> < /
+            InputWindow >
         );
     }
 
 
     render() {
         if (this.props.auth.isAuthenticated()) {
-            return <Redirect to='/admin' />
+            return <Redirect to = '/admin' / >
         }
 
-        return ( 
-            <Container>
-                <Router>
-                    <Switch>
-                        <Route path="/entry/user">
-                            {this.renderUserWindow()}
-                        </Route>
-                        <Route path="/entry/admin">
-                            {this.renderAdminWindow()}
-                        </Route>
-                    </Switch>
-                </Router>
-            </Container>
+        return ( <
+            Container >
+            <
+            Router >
+            <
+            Switch >
+            <
+            Route path = "/entry/user" > { this.renderUserWindow() } <
+            /Route> <
+            Route path = "/entry/admin" > { this.renderAdminWindow() } <
+            /Route> < /
+            Switch > <
+            /Router> < /
+            Container >
         );
     }
 }
- 
+
 export default Entry;
