@@ -114,13 +114,36 @@ class Entry extends Component {
     }
 
     onClickInputButtonAdmin = () => {
-        let credentials = {
-            address: this.state.valueInputFieldAdminCode,
+        let data = {
+            accountAddress: this.state.valueInputFieldAdminCode,
             password: this.state.valueInputFieldAdminPassword
         }
 
-        localStorage.setItem("credentials",JSON.stringify(credentials));
-        window.location.href = "/admin";
+        axios.post('https://localhost:5001/authenticate', data)
+        .then(res => {
+            console.log(res.data);
+            localStorage.setItem("authToken", JSON.stringify(res.data.authToken));
+
+            const headers = { authToken:res.data.authToken}
+
+            axios.get('https://localhost:5001/get_elections', { headers })
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(e => {
+                if (e.response) {
+                    console.log(e.response);
+                }
+            })
+
+            //window.location.href = "/admin";
+        })
+        .catch(e => {
+            if (e.response) {
+                console.log(e.response);
+            }
+            alert("Nie udało się zalogować.");
+        })
     }
 
     renderUserWindow = () => {

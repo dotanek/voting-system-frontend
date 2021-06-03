@@ -5,10 +5,14 @@ class Auth {
     }
 
     checkToken() {
-        const credentials = localStorage.getItem('credentials');
+        const credentials = localStorage.getItem('authToken');
         if (credentials) {
             this.authenticated = true;
         }
+    }
+
+    getToken() {
+        return JSON.parse(localStorage.getItem('authToken'));
     }
 
     signIn(callback) {

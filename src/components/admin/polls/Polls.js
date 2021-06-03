@@ -54,14 +54,14 @@ class Polls extends Component {
     }
 
     componentDidMount = () => {
-        let credentials = JSON.parse(localStorage.getItem("credentials"));
 
-        let data = {
-            accountAddress: credentials.address,
-            password: credentials.password
+        const headers = {
+            authToken: this.props.auth.getToken()
         }
 
-        axios.post('https://localhost:5001/get_elections', data)
+        console.log(headers);
+
+        axios.get('https://localhost:5001/get_elections', { headers })
             .then(res => {
                 console.log(res.data);
                 this.setState({polls:res.data.elections});

@@ -31,7 +31,7 @@ class Main extends Component {
     state = {  }
 
     onClickLogoutLabel = () => {
-        localStorage.removeItem("credentials");
+        localStorage.removeItem("authToken");
         window.location.href = "/entry/admin";
     }
 
