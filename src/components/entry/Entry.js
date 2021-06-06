@@ -92,9 +92,18 @@ let EntrySwapLabel = styled.div`
 
 
 class Entry extends Component {
+    constructor(props) {
+        super(props);
+        axios.defaults.withCredentials = true;
+    }
+
     state = {
         valueInputFieldAdminCode:"",
-        valueInputFieldAdminPassword:""
+        valueInputFieldAdminPassword:"",
+        valueInputFieldUserAddress:"",
+        valueInputFieldUserVoter:"",
+        valueInputFieldUserPassword:"",
+        valueInputFieldUserKey:""
     }
 
     onChangeInputFieldAdminCode = (e) => {
@@ -105,16 +114,87 @@ class Entry extends Component {
         this.setState({valueInputFieldAdminPassword:e.target.value});
     }
 
-    onClickInputButtonUserCheck = () => {
 
+
+    onClickInputButtonUserCheck = () => {
+        const data = {
+            auth: {
+                accountAddress: this.state.valueInputFieldUserAddress,
+                password: this.state.valueInputFieldUserPassword
+            },
+            keyAdr: this.state.valueInputFieldUserKey,
+            voter: this.state.valueInputFieldUserVoter
+        }
+        
+        console.log(data);
+
+        axios.post('https://localhost:5001/check_vote', data)
+        .then(res => {
+            console.log(res.data);
+            if (res.data.voted) {
+                alert("Głos związany z tym kodem został pomyślnie oddany.");
+            } else {
+                alert("Kod nie został jeszcze wykorzystany.");
+            }
+        })
+        .catch(e => {
+            if (e.response) {
+                console.log(e.response);
+            }
+            alert("Niepoprawne dane.");
+        })
     }
 
-    onClickInputButtonUserVote = () => {
+    onClickInputButtonUserVote = (e) => {
+        const data = {
+            auth: {
+                accountAddress: this.state.valueInputFieldUserAddress,
+                password: this.state.valueInputFieldUserPassword
+            },
+            keyAdr: this.state.valueInputFieldUserKey,
+            voter: this.state.valueInputFieldUserVoter
+        }
+        
+        console.log(data);
 
+        axios.post('https://localhost:5001/start_vote', data)
+        .then(res => {
+            console.log(res.data);
+            
+            let voteData = {
+                request_data: data,
+                poll_data: {
+                    title: res.data.title,
+                    candidates: res.data.candidates
+                }
+            }
+
+            localStorage.setItem("voteData", JSON.stringify(voteData));
+            window.location.href = "/user/vote-cast";
+        })
+        .catch(e => {
+            if (e.response) {
+                console.log(e.response);
+            }
+            alert("Niepoprawne dane.");
+        })
+    }
+
+    onChangeInputUserAddress = (e) => {
+        this.setState({valueInputFieldUserAddress:e.target.value});
+    }
+    onChangeInputUserPassword = (e) => {
+        this.setState({valueInputFieldUserPassword:e.target.value});
+    }
+    onChangeInputUserVoter = (e) => {
+        this.setState({valueInputFieldUserVoter:e.target.value});
+    }
+    onChangeInputUserKey = (e) => {
+        this.setState({valueInputFieldUserKey:e.target.value});
     }
 
     onClickInputButtonAdmin = () => {
-        let data = {
+        const data = {
             accountAddress: this.state.valueInputFieldAdminCode,
             password: this.state.valueInputFieldAdminPassword
         }
@@ -123,20 +203,7 @@ class Entry extends Component {
         .then(res => {
             console.log(res.data);
             localStorage.setItem("authToken", JSON.stringify(res.data.authToken));
-
-            const headers = { authToken:res.data.authToken}
-
-            axios.get('https://localhost:5001/get_elections', { headers })
-            .then(res => {
-                console.log(res.data);
-            })
-            .catch(e => {
-                if (e.response) {
-                    console.log(e.response);
-                }
-            })
-
-            //window.location.href = "/admin";
+            window.location.href = "/admin";
         })
         .catch(e => {
             if (e.response) {
@@ -149,10 +216,12 @@ class Entry extends Component {
     renderUserWindow = () => {
         return(
             <InputWindow>
-                <WindowLabel>Wprowadź kod oraz pesel aby zagłosować:</WindowLabel>
+                <WindowLabel>Wprowadź dane aby zagłosować:</WindowLabel>
                 <InputContainer>
-                    <InputField placeholder="Pesel"/>
-                    <InputField placeholder="Kod"/>
+                    <InputField placeholder="Adres" value={this.state.valueInputFieldUserAddress} onChange={this.onChangeInputUserAddress}/>
+                    <InputField placeholder="Hasło" type="password" value={this.state.valueInputFieldUserPassword} onChange={this.onChangeInputUserPassword}/>
+                    <InputField placeholder="Pesel" value={this.state.valueInputFieldUserVoter} onChange={this.onChangeInputUserVoter}/>
+                    <InputField placeholder="Klucz" value={this.state.valueInputFieldUserKey} onChange={this.onChangeInputUserKey}/>
                     <InputButton onClick={this.onClickInputButtonUserVote}>Zagłosuj</InputButton>
                     <InputButton style={{marginTop:"10px"}} onClick={this.onClickInputButtonUserCheck}>Sprawdź głos</InputButton>
                     <EntrySwapLabel>
@@ -170,7 +239,7 @@ class Entry extends Component {
             <InputWindow>
                 <WindowLabel>Wprowadź hasło administratora:</WindowLabel>
                 <InputContainer>
-                    <InputField onChange={this.onChangeInputFieldAdminCode} value={this.state.valueInputFieldAdminCode} placeholder="Kod" type="text"/>
+                    <InputField onChange={this.onChangeInputFieldAdminCode} value={this.state.valueInputFieldAdminCode} placeholder="Adres" type="text"/>
                     <InputField onChange={this.onChangeInputFieldAdminPassword} value={this.state.valueInputFieldAdminPassword} placeholder="Hasło" type="password"/>
                     <InputButton onClick={this.onClickInputButtonAdmin}>Zaloguj</InputButton>
                     <EntrySwapLabel>

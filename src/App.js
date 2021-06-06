@@ -45,7 +45,7 @@ class App extends Component {
         <Switch>
           <UnprotectedRoute path={["/entry/user", "/entry/admin"]} component={Entry}/>
           <ProtectedRoute path="/admin" component={Admin}/>
-          <ProtectedRoute path="/user" component={User}/>
+          <UnprotectedRoute path="/user/vote-cast" component={User}/>
           <Redirect to="/entry/user" />
         </Switch>
       </Router>

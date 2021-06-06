@@ -177,14 +177,49 @@ let ConfirmButton = styled.div`
     }
 `
 
+let KeyAmount = styled.div`
+    display: flex;
+    margin-top: 30px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+`
+
+let KeyAmountLabel = styled.div`
+
+`
+
+let KeyAmountInput = styled.input`
+    border: 2px solid white;
+    background: none;
+    width: 20px;
+    padding: 5px;
+    margin: 0;
+    margin-left: 10px;
+    text-decoration: none;
+    outline: none;
+    color: white;
+    text-align: center;
+`
+
 class Add extends Component {
+    constructor(props) {
+        super(props);
+        axios.defaults.withCredentials = true;
+    }
+
     state = {
         nameInputFieldValue:"",
         dateStartInputFieldValue:"",
         dateEndInputFieldValue:"",
         classInputFieldValue:"",
+        inputKeyAmountValue:"",
         classes: [
         ]
+    }
+
+    onChangeKeyAmount = (e) => {
+        this.setState({inputKeyAmountValue:e.target.value});
     }
 
     onChangeNameInputField = (e) => {
@@ -242,31 +277,31 @@ class Add extends Component {
         if (this.state.classes.length < 2) {
             return alert("Głosowanie musi mieć przynajmniej 2 wybory.");
         }
-        // Create request here.
 
-
-        let credentials = JSON.parse(localStorage.getItem("credentials"));
+        const config = {
+            headers: {
+                authToken: this.props.auth.getToken()
+            }
+        }
 
         let data = {
-            auth: {
-                accountAddress: credentials.address,
-                password: credentials.password
-            },
             title: this.state.nameInputFieldValue,
             dateFrom: this.state.dateStartInputFieldValue,
             dateTo: this.state.dateEndInputFieldValue,
             candidates: this.state.classes,
-            keysPerVoter: 1
+            keysPerVoter: this.state.inputKeyAmountValue
         }
 
-        axios.post('https://localhost:5001/create_election', data)
+        axios.post('https://localhost:5001/create_election', data, config)
             .then(res => {
                 console.log(res.data);
-                this.setState({polls:res.data.elections});
+                window.location.href = "/admin";
+                
             })
             .catch(e => {
                 if (e.response) {
                     console.log(e.response);
+                    alert("Nie udało się utworzyć glosowania.");
                 }
             })
     }
@@ -305,6 +340,10 @@ class Add extends Component {
                         <InputLabel>Data zakończenia</InputLabel>
                         <DateInputField value={this.dateEndInputFieldValue} onChange={this.onChangeDateEndInputField} className="no-select" type="date" placeholder="Data zakończenia"/>
                     </Input>
+                    <KeyAmount>
+                        <KeyAmountLabel>Liczba kluczy na użytkownika: </KeyAmountLabel>
+                        <KeyAmountInput value={this.state.inputKeyAmountValue} onChange={this.onChangeKeyAmount}></KeyAmountInput>
+                    </KeyAmount>
                 </InputBox>
                 <ClassBox>
                     <ClassLabel>Kandydaci / Partie</ClassLabel>

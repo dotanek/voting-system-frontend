@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import BackButton from '../BackButton';
 import Title from '../Title';
@@ -8,7 +9,7 @@ import PollsListItem from './PollsListItem';
 
 let Container = styled.div`
     width: 700px;
-    max-height: 50vh;
+    max-height: 80vh;
     overflow-y: auto;
     padding: 0 10px;
     display: flex;
@@ -26,6 +27,11 @@ let PollsList = styled.div`
 `
 
 class Polls extends Component {
+    constructor(props) {
+        super(props);
+        axios.defaults.withCredentials = true;
+    }
+
     state = {
         /*polls: [
             {id: 1, name:"test-poll-name1", date_start:"11.01.2021", date_end:"11.01.2021", active:true},
@@ -46,24 +52,25 @@ class Polls extends Component {
             return "Brak."
         }
 
-        return this.state.polls?.map(
-            p => (
-                <PollsListItem key={p.electionId} poll={p}/>
-            )
+        return this.state.polls?.map(p => { 
+                let dateEnd = moment(p.dateTo, 'YYYY-M-DD HH:mm:ss');
+                let dateToday = moment();
+                p.active = !dateToday.isAfter(dateEnd);
+                return (
+                    <PollsListItem key={p.electionId} poll={p}/>
+                )
+            }
         );
     }
 
     componentDidMount = () => {
-
         const headers = {
             authToken: this.props.auth.getToken()
         }
 
-        console.log(headers);
-
         axios.get('https://localhost:5001/get_elections', { headers })
             .then(res => {
-                console.log(res.data);
+                console.log(res.data)
                 this.setState({polls:res.data.elections});
             })
             .catch(e => {

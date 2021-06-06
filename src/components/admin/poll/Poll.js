@@ -63,9 +63,19 @@ let Right = styled.div`
     justify-content: center;
 `
 
+let Button = styled(BackButton)`
+    font-size: 10px;
+    width: 160px;
+`
+
 class Poll extends Component {
+    constructor(props) {
+        super(props);
+        axios.defaults.withCredentials = true;
+    }
+
     state = {
-        poll_data: {
+        /*poll_data: {
             name: "Some poll name",
             author: "Jakiś_admin_123",
             date_start: "11.11.2021",
@@ -80,23 +90,32 @@ class Poll extends Component {
                 {label:"Aaa", value:411},
                 {label:"Bbbb", value:32},
             ]
-        }
+        }*/
     }
 
     componentDidMount = () => {
-        let credentials = JSON.parse(localStorage.getItem("credentials"));
-
-        let data = {
-            accountAddress: credentials.address,
-            password: credentials.password
+        const config = {
+            headers: {
+                authToken: this.props.auth.getToken()
+            }
         }
 
         let urlParts = window.location.href.split('/');
         let electionId = urlParts[urlParts.length-1];
 
-        axios.post('https://localhost:5001/get_election_details?id='+electionId, data)
+        axios.get('https://localhost:5001/get_election_details?id='+electionId, config)
             .then(res => {
                 console.log(res.data);
+                this.setState({
+                    poll_data: {
+                        name: res.data.title,
+                        date_start: res.data.dateFrom.slice(0,10),
+                        date_end: res.data.dateTo.slice(0,10),
+                        results: res.data.results.map(r => r = { label:r.candidate,value:r.votes })
+                    }
+                });
+
+                console.log(this.state.poll_data);
             })
             .catch(e => {
                 if (e.response) {
@@ -105,7 +124,20 @@ class Poll extends Component {
             })
     }
 
+
     render() { 
+        if (!this.state.poll_data) {
+            return (
+                <React.Fragment>
+                    Wczytywanie...
+                    <BackButton linkTo="/admin/polls-view" />
+                </React.Fragment>
+            );
+        }
+
+        let urlParts = window.location.href.split('/');
+        let electionId = urlParts[urlParts.length-1];
+
         return (
             <React.Fragment>
                 <Title text="Wyniki głosowania:"/>
@@ -114,10 +146,6 @@ class Poll extends Component {
                         <Left>Nazwa:</Left>
                         <Right>{this.state.poll_data.name}</Right>
                     </Name>
-                    <Author>
-                        <Left>Autor:</Left>
-                        <Right>{this.state.poll_data.author}</Right>
-                    </Author>
                     <DateStart>
                         <Left>Data rozpoczęcia:</Left>
                         <Right>{this.state.poll_data.date_start}</Right>
@@ -132,6 +160,7 @@ class Poll extends Component {
                     </Votes>
                 </Container>
                 <Chart data={this.state.poll_data.results}/>
+                <Button text="Generuj klucz" linkTo={"/admin/polls-generate/"+electionId} />
                 <BackButton linkTo="/admin/polls-view" />
             </React.Fragment>
         );

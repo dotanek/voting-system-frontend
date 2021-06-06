@@ -10,6 +10,7 @@ import Main from './main/Main';
 import Polls from './polls/Polls';
 import Poll from './poll/Poll';
 import Add from './add/Add';
+import Generate from './generate/Generate';
 
 let Container = styled.div`
     width: 100vw;
@@ -42,6 +43,7 @@ class Admin extends Component {
                         <RouteWithProps exact path="/admin" component={Main} auth={this.props.auth}/>
                         <RouteWithProps exact path="/admin/polls-view" component={Polls} auth={this.props.auth}/>
                         <RouteWithProps exact path="/admin/polls-view/:id" component={Poll} auth={this.props.auth}/>
+                        <RouteWithProps exact path="/admin/polls-generate/:id" component={Generate} auth={this.props.auth}/>
                         <RouteWithProps path="/admin/polls-add" component={Add} auth={this.props.auth}/>
                     </Switch>
                 </Router>

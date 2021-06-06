@@ -47,8 +47,11 @@ let Bar = styled.div`
 class ChartBar extends Component {
     state = {  }
     render() { 
+        let height = 0;
 
-        let height = this.props.datum.value / this.props.total * 100;
+        if (this.props.datum.value !== 0 && this.props.total !== 0) {
+            height = this.props.datum.value / this.props.total * 100;
+        }
 
         return (
             <Container height={this.props.height}>
