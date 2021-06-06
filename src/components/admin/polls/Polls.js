@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import moment from 'moment';
 
 import BackButton from '../BackButton';
 import Title from '../Title';
@@ -53,9 +52,9 @@ class Polls extends Component {
         }
 
         return this.state.polls?.map(p => { 
-                let dateEnd = moment(p.dateTo, 'YYYY-M-DD HH:mm:ss');
-                let dateToday = moment();
-                p.active = !dateToday.isAfter(dateEnd);
+                //let dateEnd = moment(p.dateTo, 'YYYY-M-DD HH:mm:ss');
+                //let dateToday = moment();
+                p.active = !p.finished;
                 return (
                     <PollsListItem key={p.electionId} poll={p}/>
                 )
