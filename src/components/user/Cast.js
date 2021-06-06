@@ -82,7 +82,7 @@ class Cast extends Component {
         console.log(candidate_id)
 
         let data = voteData.request_data;
-        data.candidate_id = candidate_id;
+        data.candidateId = candidate_id;
 
         console.log(data);
 
