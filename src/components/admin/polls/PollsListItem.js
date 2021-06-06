@@ -17,30 +17,8 @@ let Container = styled(Link)`
     }
 
     &:hover {
-        background-color: ${props => props.isactive ? "rgba(87,161,61,0.3)" : "rgba(114,176,208,1)"};
-        cursor: ${props => props.isactive ? "default" : "pointer"};
+        background-color: ${props => props.isactive ? "rgba(87,161,61,1)" : "rgba(114,176,208,1)"};
         //background-color: ${props => props.isactive ? "rgba(87,161,61,1)" : "rgba(114,176,208,1)"};
-    }
-`
-
-let ContainerNoLink = styled.div`
-    height: 50px;
-    width: calc(100% - 4px);
-    display: flex;
-    color: white;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    transition: 0.2s ease-in-out;
-    border-left: 4px solid white;
-    background-color: ${props => props.isactive ? "rgba(87,161,61,0.3)" : "rgba(114,176,208,0.3)"};
-
-    &:first-of-type {
-        margin-top: 0;
-    }
-
-    &:hover {
-        background-color: ${props => props.isactive ? "rgba(87,161,61,0.3)" : "rgba(114,176,208,1)"};
-        cursor: ${props => props.isactive ? "default" : "pointer"};
     }
 `
 
@@ -93,34 +71,20 @@ let Bottom = styled.div`
     padding-left: 10px;
 `
 
+
 class PollsListItem extends Component {
     state = {  }
-    render() { 
 
+    redirect = () => {
         if (this.props.poll.active) {
-            return (
-                <ContainerNoLink to={"/admin/polls-view/"+this.props.poll.electionId} isactive={this.props.poll.active ? 1 : 0}>
-                    <Name>
-                        <Top>Nazwa</Top>
-                        <Bottom>{this.props.poll.title}</Bottom>
-                    </Name>
-                    <DateStart>
-                        <Top>Początek</Top>
-                        <Bottom>{this.props.poll.dateFrom.slice(0,10)}</Bottom>
-                    </DateStart>
-                    <DateEnd>
-                        <Top>Koniec</Top>
-                        <Bottom>{this.props.poll.dateTo.slice(0,10)}</Bottom>
-                    </DateEnd>
-                    <Status>
-                        {this.props.poll.active ? "Aktywna" : "Zakończona"}
-                    </Status>
-                </ContainerNoLink>
-            );
+            return "/admin/polls-generate/"+this.props.poll.electionId;
         }
+        return "/admin/polls-view/"+this.props.poll.electionId
+    }
 
+    render() { 
         return (
-            <Container to={"/admin/polls-view/"+this.props.poll.electionId} isactive={this.props.poll.active ? 1 : 0}>
+            <Container to={this.redirect()} isactive={this.props.poll.active ? 1 : 0}>
                 <Name>
                     <Top>Nazwa</Top>
                     <Bottom>{this.props.poll.title}</Bottom>
@@ -138,7 +102,6 @@ class PollsListItem extends Component {
                 </Status>
             </Container>
         );
-        
     }
 }
  

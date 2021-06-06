@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-import { 
+import {
     BrowserRouter as Router,
     Switch,
     Route,
@@ -10,7 +10,7 @@ import {
     Redirect
 } from 'react-router-dom';
 
-let Container = styled.div`
+let Container = styled.div `
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -19,14 +19,14 @@ let Container = styled.div`
     font-family: 'Roboto', sans-serif;
 `
 
-let InputWindow = styled.div`
+let InputWindow = styled.div `
     width: 400px;
     height: 300px;
     display: flex;
     flex-direction: column;
 `
 
-let WindowLabel = styled.div`
+let WindowLabel = styled.div `
     width: 100%;
     flex-grow: 1;
     display: flex;
@@ -37,13 +37,13 @@ let WindowLabel = styled.div`
     border-bottom: 2px solid white;
 `
 
-let InputContainer = styled.div`
+let InputContainer = styled.div `
     width: 100%;
     height: 60%;
     padding-top: 10px;
 `
 
-let InputField = styled.input`
+let InputField = styled.input `
     width: calc(100% - 16px);
     padding: 6px;
     margin: 0;
@@ -61,7 +61,7 @@ let InputField = styled.input`
     }
 `
 
-let InputButton = styled.div`
+let InputButton = styled.div `
     width: calc(100% - 16px);
     padding: 8px;
     display: flex;
@@ -80,7 +80,7 @@ let InputButton = styled.div`
     }
 `
 
-let EntrySwapLabel = styled.div`
+let EntrySwapLabel = styled.div `
     width: 100%;
     display: flex;
     justify-content: center;
@@ -107,11 +107,11 @@ class Entry extends Component {
     }
 
     onChangeInputFieldAdminCode = (e) => {
-        this.setState({valueInputFieldAdminCode:e.target.value});
+        this.setState({ valueInputFieldAdminCode: e.target.value });
     }
 
     onChangeInputFieldAdminPassword = (e) => {
-        this.setState({valueInputFieldAdminPassword:e.target.value});
+        this.setState({ valueInputFieldAdminPassword: e.target.value });
     }
 
 
@@ -255,24 +255,20 @@ class Entry extends Component {
 
     render() {
         if (this.props.auth.isAuthenticated()) {
-            return <Redirect to='/admin' />
+            return <Redirect to = '/admin' />
         }
 
-        return ( 
+        return (
             <Container>
                 <Router>
-                    <Switch>
-                        <Route path="/entry/user">
-                            {this.renderUserWindow()}
-                        </Route>
-                        <Route path="/entry/admin">
-                            {this.renderAdminWindow()}
-                        </Route>
+                    <Switch >
+                        <Route path = "/entry/user" > { this.renderUserWindow() }</Route>
+                        <Route path = "/entry/admin" > { this.renderAdminWindow() }</Route>
                     </Switch>
-                </Router>
+                </Router> 
             </Container>
         );
     }
 }
- 
+
 export default Entry;

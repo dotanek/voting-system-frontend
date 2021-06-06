@@ -160,7 +160,7 @@ class Poll extends Component {
                     </Votes>
                 </Container>
                 <Chart data={this.state.poll_data.results}/>
-                <Button text="Generuj klucz" linkTo={"/admin/polls-generate/"+electionId} />
+                {/*<Button text="Generuj klucz" linkTo={"/admin/polls-generate/"+electionId} />*/}
                 <BackButton linkTo="/admin/polls-view" />
             </React.Fragment>
         );
