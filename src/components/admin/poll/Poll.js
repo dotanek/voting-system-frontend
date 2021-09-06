@@ -124,6 +124,12 @@ class Poll extends Component {
             })
     }
 
+    countVotes = () => {
+        let total = 0;
+        this.state.poll_data?.results.forEach(r => total += r.value);
+        return total;
+    }
+
 
     render() { 
         if (!this.state.poll_data) {
@@ -156,7 +162,7 @@ class Poll extends Component {
                     </DateEnd>
                     <Votes>
                         <Left>Głosy:</Left>
-                        <Right>12345</Right>
+                        <Right>{this.countVotes()}</Right>
                     </Votes>
                 </Container>
                 <Chart data={this.state.poll_data.results}/>

@@ -162,7 +162,7 @@ class Generate extends Component {
                     <InputField value={this.state.inputVoterValue} onChange={this.onChangeInputFieldVoter} placeholder="PESEL użytkownika"></InputField>
                     <InputButton onClick={this.onClickButtonGenerate}>Generuj</InputButton>
                 </Container>
-                <BackButton linkTo={"/admin/polls-view/"+electionId} />
+                <BackButton linkTo="/admin/polls-view" />
             </React.Fragment>
         );
     }
